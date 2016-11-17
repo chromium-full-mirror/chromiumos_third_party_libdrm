@@ -331,6 +331,9 @@ typedef struct _drmModePlane {
 
 	uint32_t possible_crtcs;
 	uint32_t gamma_size;
+
+	uint32_t count_format_modifiers;
+	struct drm_format_modifier *format_modifiers;
 } drmModePlane, *drmModePlanePtr;
 
 typedef struct _drmModePlaneRes {
@@ -482,6 +485,7 @@ extern int drmModePageFlipTarget(int fd, uint32_t crtc_id, uint32_t fb_id,
 
 extern drmModePlaneResPtr drmModeGetPlaneResources(int fd);
 extern drmModePlanePtr drmModeGetPlane(int fd, uint32_t plane_id);
+extern drmModePlanePtr drmModeGetPlane2(int fd, uint32_t plane_id);
 extern int drmModeSetPlane(int fd, uint32_t plane_id, uint32_t crtc_id,
 			   uint32_t fb_id, uint32_t flags,
 			   int32_t crtc_x, int32_t crtc_y,
