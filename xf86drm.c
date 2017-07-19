@@ -3999,7 +3999,7 @@ int drmGetDevices2(uint32_t flags, drmDevicePtr devices[], int max_devices)
             ret = drmProcessPlatformDevice(&device, node, node_type, maj, min,
                                            devices != NULL, flags);
             if (ret)
-                goto free_devices;
+                continue;
 
             break;
 
