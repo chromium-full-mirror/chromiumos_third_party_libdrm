@@ -699,29 +699,18 @@ struct drm_format_modifier_blob {
 	/* struct drm_format_modifier modifiers[] */
 };
 
+/*
+ * FIXME(crbug.com/763760): This is an early prototype version of the UAPI and
+ * is not compatible with the final one merged upstream. Upstream libdrm
+ * already includes final one in its headers and we need to transition our
+ * kernels and userspace to it ASAP.
+ */
 struct drm_format_modifier {
-	/* Bitmask of formats in get_plane format list this info applies to. The
-	 * offset allows a sliding window of which 64 formats (bits).
-	 *
-	 * Some examples:
-	 * In today's world with < 65 formats, and formats 0, and 2 are
-	 * supported
-	 * 0x0000000000000005
-	 *		  ^-offset = 0, formats = 5
-	 *
-	 * If the number formats grew to 128, and formats 98-102 are
-	 * supported with the modifier:
-	 *
-	 * 0x0000003c00000000 0000000000000000
-	 *		  ^
-	 *		  |__offset = 64, formats = 0x3c00000000
-	 *
-	 */
+	/* Bitmask of formats in get_plane format list this info
+	 * applies to. */
 	__u64 formats;
-	__u32 offset;
-	__u32 pad;
 
-	/* The modifier that applies to the >get_plane format list bitmask. */
+	/* This modifier can be used with the format for this plane. */
 	__u64 modifier;
 };
 
