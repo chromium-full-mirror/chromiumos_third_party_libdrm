@@ -187,6 +187,9 @@ extern "C" {
 #define DRM_FORMAT_MOD_VENDOR_BROADCOM 0x07
 /* add more to the end as needed */
 
+/* For backwards compatibility prior to 2.4.92. */
+#define DRM_FORMAT_MOD_VENDOR_NV      DRM_FORMAT_MOD_VENDOR_NVIDIA
+
 #define DRM_FORMAT_RESERVED	      ((1ULL << 56) - 1)
 
 /* Vendor ID for downstream, interim ChromeOS specific modifiers. */
