@@ -1,3 +1,9 @@
+libdrm (2.4.99-1-cros0) UNRELEASED; urgency=medium
+
+  * Bump revision to avoid SHA mismatches.
+
+ -- David Riley <davidriley@google.com>  Fri, 01 Nov 2019 09:51:40 -0700
+
 libdrm (2.4.99-1) unstable; urgency=medium
 
   * New upstream release. (Closes: #934494)
