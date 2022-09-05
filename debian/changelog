@@ -1,3 +1,10 @@
+libdrm (2.4.113-2~cros10+1) UNRELEASED; urgency=medium
+
+  * Rebuild for cros-packages.
+  * Revert source format to 1.0.
+
+ -- James Ye <jamesye@google.com>  Mon, 05 Sep 2022 15:53:24 +1000
+
 libdrm (2.4.113-2) unstable; urgency=medium
 
   * rules: Fix arm FTBFS.
