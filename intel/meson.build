@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-libdrm_intel = shared_library(
+libdrm_intel = library(
   'drm_intel',
   [
     files(
@@ -31,6 +31,7 @@ libdrm_intel = shared_library(
   link_with : libdrm,
   dependencies : [dep_pciaccess, dep_pthread_stubs, dep_rt, dep_valgrind, dep_atomic_ops],
   c_args : libdrm_c_args,
+  gnu_symbol_visibility : 'hidden',
   version : '1.0.0',
   install : true,
 )
@@ -40,16 +41,19 @@ ext_libdrm_intel = declare_dependency(
   include_directories : [inc_drm, include_directories('.')],
 )
 
+if meson.version().version_compare('>= 0.54.0')
+  meson.override_dependency('libdrm_intel', ext_libdrm_intel)
+endif
+
 install_headers(
   'intel_bufmgr.h', 'intel_aub.h', 'intel_debug.h',
   subdir : 'libdrm',
 )
 
 pkg.generate(
+  libdrm_intel,
   name : 'libdrm_intel',
-  libraries : libdrm_intel,
   subdirs : ['.', 'libdrm'],
-  version : meson.project_version(),
   requires : 'libdrm',
   description : 'Userspace interface to intel kernel DRM services',
 )
@@ -60,47 +64,46 @@ test_decode = executable(
   include_directories : [inc_root, inc_drm],
   link_with : [libdrm, libdrm_intel],
   c_args : libdrm_c_args,
+  gnu_symbol_visibility : 'hidden',
 )
 
 test(
   'gen4-3d.batch',
-  prog_bash,
-  args : files('tests/gen4-3d.batch.sh'),
+  find_program('tests/gen4-3d.batch.sh'),
   workdir : meson.current_build_dir(),
 )
 test(
   'gen45-3d.batch',
-  prog_bash,
-  args : files('tests/gm45-3d.batch.sh'),
+  find_program('tests/gm45-3d.batch.sh'),
   workdir : meson.current_build_dir(),
 )
 test(
   'gen5-3d.batch',
-  prog_bash,
-  args : files('tests/gen5-3d.batch.sh'),
+  find_program('tests/gen5-3d.batch.sh'),
   workdir : meson.current_build_dir(),
 )
 test(
   'gen6-3d.batch',
-  prog_bash,
-  args : files('tests/gen6-3d.batch.sh'),
+  find_program('tests/gen6-3d.batch.sh'),
   workdir : meson.current_build_dir(),
 )
 test(
   'gen7-3d.batch',
-  prog_bash,
-  args : files('tests/gen7-3d.batch.sh'),
+  find_program('tests/gen7-3d.batch.sh'),
   workdir : meson.current_build_dir(),
 )
 test(
   'gen7-2d-copy.batch',
-  prog_bash,
-  args : files('tests/gen7-2d-copy.batch.sh'),
+  find_program('tests/gen7-2d-copy.batch.sh'),
   workdir : meson.current_build_dir(),
 )
+
 test(
-  'intel-symbol-check',
-  prog_bash,
-  env : env_test,
-  args : [files('intel-symbol-check'), libdrm_intel]
+  'intel-symbols-check',
+  symbols_check,
+  args : [
+    '--lib', libdrm_intel,
+    '--symbols-file', files('intel-symbols.txt'),
+    '--nm', prog_nm.path(),
+  ],
 )

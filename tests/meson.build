@@ -21,14 +21,10 @@
 inc_tests = include_directories('.')
 
 subdir('util')
-subdir('kms')
 subdir('modeprint')
 subdir('proptest')
 subdir('modetest')
 subdir('vbltest')
-if with_libkms
-  subdir('kmstest')
-endif
 if with_radeon
   subdir('radeon')
 endif
@@ -64,23 +60,15 @@ hash = executable(
   c_args : libdrm_c_args,
 )
 
-random = executable(
-  'random',
-  files('random.c'),
-  include_directories : [inc_root, inc_drm],
-  link_with : libdrm,
-  c_args : libdrm_c_args,
-)
-
 drmdevice = executable(
   'drmdevice',
   files('drmdevice.c'),
   include_directories : [inc_root, inc_drm],
   link_with : libdrm,
   c_args : libdrm_c_args,
+  install : with_install_tests,
 )
 
-test('random', random, timeout : 240)
 test('hash', hash)
 test('drmsl', drmsl)
 test('drmdevice', drmdevice)
